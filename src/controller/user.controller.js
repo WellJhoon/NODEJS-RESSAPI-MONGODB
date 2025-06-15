@@ -1,16 +1,17 @@
 import User from "./../models/user.model.js";
+import { UserFactory } from "../factory/UserFactory.js";
 
 export const register = async (req, res) => {
-  const { name, lastName, email, password, picture, phoneNumber } = req.body;
+  const { name, lastName, email, password, picture, phoneNumber, role } = req.body;
   try {
-    const user = new User({
+    const user = UserFactory.create(role, {
       name,
       lastName,
       email,
       password,
       picture,
-      phoneNumber,
-    });
+      phoneNumber
+    })
     await user.save();
     res.status(200).json({ message: "user is created" });
   } catch (error) {
@@ -30,7 +31,7 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Contraseña incorrecta" });
     }
-    res.status(200).json({ message: "Login exitoso", user: {name: user.name, email: user.email, phoneNumber: user.phoneNumber } });
+    res.status(200).json({ message: "Login exitoso", user: {name: user.name, email: user.email, phoneNumber: user.phoneNumber, role: user.role } });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

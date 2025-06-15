@@ -27,6 +27,11 @@ const userSchema = mongoose.Schema({
         type: Number,
         required: false
     },
+    role: {
+        type: String,
+        enum: ["admin", "doctor", "paciente"],
+        require: true
+    }
 })
 
 //hast password beforce to save the password
